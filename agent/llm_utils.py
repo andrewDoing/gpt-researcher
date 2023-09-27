@@ -17,6 +17,11 @@ CFG = Config()
 
 openai.api_key = CFG.openai_api_key
 
+# TODO: wrap this in a mode configuration
+openai.api_type = CFG.openai_api_type
+openai.api_base = CFG.openai_api_base
+openai.api_version = CFG.openai_api_version
+
 from typing import Optional
 import logging
 
@@ -63,6 +68,7 @@ def send_chat_completion_request(
 ):
     if not stream:
         result = lc_openai.ChatCompletion.create(
+            deployment_id="gpt-4",
             model=model, # Change model here to use different models
             messages=messages,
             temperature=temperature,
@@ -80,6 +86,7 @@ async def stream_response(model, messages, temperature, max_tokens, websocket):
     print(f"streaming response...")
 
     for chunk in lc_openai.ChatCompletion.create(
+            deployment_id="gpt-4",
             model=model,
             messages=messages,
             temperature=temperature,
